@@ -1,0 +1,33 @@
+{% extends 'tom_common/base.html' %}
+{% load static targets_extras observation_extras dataproduct_extras tom_common_extras %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<div class="row">
+  <div class="col-md-8">
+    <h2 class="text-center">ZTF Target and Observation Manager</h2>
+    <p class="text-center"><img src="{% static 'tom_common/img/logo-text.png' %}" width="256" class="img-fluid mx-auto"></p>
+    <h3>Resources</h3>
+    <ul>
+      <li>
+        <a href="https://tomtoolkit.github.io" title="TOM Toolkit home page">TOM Toolkit homepage</a>
+      </li>
+      <li> <a href="https://www.djangoproject.com/">Official Django documentation</a>.</li>
+      <li> <a href="http://www.astropy.org/">Official Astropy documentation</a>.</li>
+    </ul>
+  </div>
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header">
+        Latest Comments
+      </div>
+      {% recent_comments %}
+    </div>
+    <br/>
+    <div class="card">
+      <div class="card-header">
+        Latest Targets
+      </div>
+      {% recent_targets %}
+  </div>
+</div>
+{% endblock %}
