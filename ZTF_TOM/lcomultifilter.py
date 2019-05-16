@@ -11,9 +11,9 @@ class LCOMultiFilterFacility(LCOFacility):
 
 class LCOMultiFilterForm(LCOObservationForm):
     filter2 = forms.ChoiceField(choices=filter_choices)
-    exposure_time2 = forms.FloatField(min_value=0.1, initial=12.3)
+    exposure_time2 = forms.FloatField(min_value=0.1)
     filter3 = forms.ChoiceField(choices=filter_choices)
-    exposure_time3 = forms.FloatField(min_value=0)
+    exposure_time3 = forms.FloatField(min_value=0, initial=0)
     #print(exposure_time2)
 
     def layout(self):
