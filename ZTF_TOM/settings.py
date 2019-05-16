@@ -52,13 +52,15 @@ INSTALLED_APPS = [
     'tom_catalogs',
     'tom_observations',
     'tom_dataproducts',
+    'run_alert',
 ]
 
 SITE_ID = 1
 
 TOM_ALERT_CLASSES = [
     'tom_alerts.brokers.mars.MARSBroker',
-    'ZTF_TOM.my_MARS.myMARS',
+    'ZTF_TOM.my_broker.MyBroker',
+    'ZTF_TOM.my_MARS.MyMARS',
 ]
 
 MIDDLEWARE = [

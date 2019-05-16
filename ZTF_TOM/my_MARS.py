@@ -1,7 +1,7 @@
 from tom_alerts.alerts import GenericQueryForm, GenericAlert
 from tom_alerts.models import BrokerQuery
 from tom_targets.models import Target
-from mars import MARSQueryForm
+from tom_alerts.brokers.mars import MARSQueryForm
 from django import forms
 import requests
 
@@ -9,13 +9,11 @@ import requests
 broker_url = 'https://gist.githubusercontent.com/mgdaily/f5dfb4047aaeb393bf1996f0823e1064/raw/6fe1680f22b86467c50a21a138177838378eb143/example_broker_data.json'
 
 class MyMARSForm(MARSQueryForm):
-    mag_min = forms.IntegerField(required=True)
-    mag_max = forms.IntegerField(required=True)
-    ra = forms.FloatField(required=False)
+#class MyMARSForm(GenericQueryForm):
     name = forms.CharField(required=False)
 
-class myMARS:
-    name = 'my_MARS'
+class MyMARS:
+    name = 'MyMARS'
     form = MyMARSForm
 
     @classmethod
@@ -25,7 +23,7 @@ class myMARS:
         response.raise_for_status()
         test_alerts = response.json()
         #print(test_alerts)
-        return [alert for alert in test_alerts if alert['ra'] == parameters['ra'] or alert['name'] == parameters['name'] and alert['mag'] > parameters['mag_min'] and alert['mag'] < parameters['mag_max']]
+        return [alert for alert in test_alerts if alert['name'] == parameters['name']]
 
     @classmethod
     def fetch_alert(clazz, alert_id):
