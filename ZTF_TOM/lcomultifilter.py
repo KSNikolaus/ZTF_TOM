@@ -2,8 +2,6 @@
 from tom_observations.facilities.lco import LCOFacility
 from tom_observations.facilities.lco import LCOFacility, LCOObservationForm, filter_choices
 from django import forms
-from tom_observations.facilities.lco import LCOFacility, LCOObservationForm, filter_choices
-from django import forms
 from crispy_forms.layout import Div
 
 
@@ -13,9 +11,10 @@ class LCOMultiFilterFacility(LCOFacility):
 
 class LCOMultiFilterForm(LCOObservationForm):
     filter2 = forms.ChoiceField(choices=filter_choices)
-    exposure_time2 = forms.FloatField(min_value=0.1)
+    exposure_time2 = forms.FloatField(min_value=0.1, initial=12.3)
     filter3 = forms.ChoiceField(choices=filter_choices)
-    exposure_time3 = forms.FloatField(min_value=0.1)
+    exposure_time3 = forms.FloatField(min_value=0)
+    #print(exposure_time2)
 
     def layout(self):
         return Div(
@@ -49,15 +48,24 @@ class LCOMultiFilterForm(LCOObservationForm):
 
     def observation_payload(self):
         payload = super().observation_payload()
-        molecule2 = payload['requests'][0]['molecules'][0].copy()
-        molecule3 = payload['requests'][0]['molecules'][0].copy()
+        if self.cleaned_data['exposure_time3'] == 0:
+            molecule2 = payload['requests'][0]['molecules'][0].copy()
+            molecule2['filter'] = self.cleaned_data['filter2']
+            molecule2['exposure_time'] = self.cleaned_data['exposure_time2']
+            payload['requests'][0]['molecules'].extend([molecule2])
 
-        molecule2['filter'] = self.cleaned_data['filter2']
-        molecule2['exposure_time'] = self.cleaned_data['exposure_time2']
-        molecule3['filter'] = self.cleaned_data['filter3']
-        molecule3['exposure_time'] = self.cleaned_data['exposure_time3']
+        else:
+            molecule2 = payload['requests'][0]['molecules'][0].copy()
+            molecule3 = payload['requests'][0]['molecules'][0].copy()
 
-        payload['requests'][0]['molecules'].extend([molecule2, molecule3])
+            molecule2['filter'] = self.cleaned_data['filter2']
+            molecule2['exposure_time'] = self.cleaned_data['exposure_time2']
+            molecule3['filter'] = self.cleaned_data['filter3']
+            molecule3['exposure_time'] = self.cleaned_data['exposure_time3']
+
+            payload['requests'][0]['molecules'].extend([molecule2, molecule3])
+
+        print("exposure time: ", self.cleaned_data['exposure_time2'])
         return payload
 
 
