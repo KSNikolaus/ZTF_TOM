@@ -1,0 +1,7 @@
+archive				https://mars.lco.global/
+cone              270,-10,0.5
+magpsf__lte			17.5
+classtar__gte			0.8
+rb__gte				0.8
+jd__gt				7
+min_number_points		5
