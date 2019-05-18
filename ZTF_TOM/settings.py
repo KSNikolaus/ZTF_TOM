@@ -53,13 +53,13 @@ INSTALLED_APPS = [
     'tom_observations',
     'tom_dataproducts',
     'run_alert',
+    'lightcurve',
 ]
 
 SITE_ID = 1
 
 TOM_ALERT_CLASSES = [
     'tom_alerts.brokers.mars.MARSBroker',
-    'ZTF_TOM.my_broker.MyBroker',
     'ZTF_TOM.my_MARS.MyMARS',
 ]
 
@@ -210,7 +210,7 @@ FACILITIES = {
 TOM_FACILITY_CLASSES = [
     'tom_observations.facilities.lco.LCOFacility',
     'tom_observations.facilities.gemini.GEMFacility',
-    'mytom.lcomultifilter.LCOMultiFilterFacility',
+    'ZTF_TOM.lcomultifilter.LCOMultiFilterFacility',
 ]
 
 
