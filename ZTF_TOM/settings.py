@@ -60,7 +60,7 @@ SITE_ID = 1
 
 TOM_ALERT_CLASSES = [
     'tom_alerts.brokers.mars.MARSBroker',
-    'ZTF_TOM.my_MARS.MyMARS',
+    #'ZTF_TOM.my_MARS.MyMARS',
 ]
 
 MIDDLEWARE = [
@@ -209,7 +209,7 @@ FACILITIES = {
 
 TOM_FACILITY_CLASSES = [
     'tom_observations.facilities.lco.LCOFacility',
-    'tom_observations.facilities.gemini.GEMFacility',
+    #'tom_observations.facilities.gemini.GEMFacility',
     'ZTF_TOM.lcomultifilter.LCOMultiFilterFacility',
 ]
 
@@ -234,7 +234,7 @@ AUTH_STRATEGY = 'READ_ONLY'
 OPEN_URLS = []
 
 HOOKS = {
-    'target_post_save': 'tom_common.hooks.target_post_save',
+    #'target_post_save': 'tom_common.hooks.target_post_save',
     'observation_change_state': 'tom_common.hooks.observation_change_state'
 }
 
