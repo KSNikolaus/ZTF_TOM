@@ -1,0 +1,14 @@
+#!/bin/bash
+
+export PYTHONPATH="/var/www/ZTF_TOM"
+export DJANGO_SETTINGS_MODULE="ZTF_TOM.settings"
+
+# collect static files
+python /var/www/ZTF_TOM/manage.py collectstatic --noinput
+
+# perform database migrations
+python /var/www/ZTF_TOM/manage.py migrate --noinput
+chown -R uwsgi:uwsgi /var/www/ZTF_TOM
+
+# run under supervisord
+exec /usr/bin/supervisord -n -c /etc/supervisord.conf
