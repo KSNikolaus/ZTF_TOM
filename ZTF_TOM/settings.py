@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'tom_dataproducts',
     'run_alert',
     'lightcurve',
+    'ML_classifier',
 ]
 
 SITE_ID = 1

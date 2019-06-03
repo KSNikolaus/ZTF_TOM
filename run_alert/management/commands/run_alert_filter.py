@@ -128,9 +128,11 @@ def analyze_individual_alert(alert):
 class Command(BaseCommand):
     help = "run an alert query"
 
+
     def add_arguments(self, parser):
        parser.add_argument('--query_name', help='indicates name of query to run') 
        #Django doc. -> how parser works: https://docs.djangoproject.com/en/2.2/howto/custom-management-commands/
+
 
     def handle(self, *args, **options):
         query = BrokerQuery.objects.get(name=options['query_name'])
