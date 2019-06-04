@@ -52,7 +52,6 @@ INSTALLED_APPS = [
     'tom_observations',
     'tom_dataproducts',
     'run_alert',
-    'lightcurve',
     'ML_classifier',
 ]
 
