@@ -4,10 +4,10 @@ export PYTHONPATH="/var/www/ztftom"
 export DJANGO_SETTINGS_MODULE="ZTF_TOM.settings"
 
 # collect static files
-python /var/www/ZTF_TOM/manage.py collectstatic --noinput
+python /var/www/ztftom/manage.py collectstatic --noinput
 
 # perform database migrations
-python /var/www/ZTF_TOM/manage.py migrate --noinput
+python /var/www/ztftom/manage.py migrate --noinput
 chown -R uwsgi:uwsgi /var/www/ztftom
 
 # run under supervisord
