@@ -15,11 +15,11 @@ lightcurve_path = os.environ.get("lightcurve_path")
 target_path = os.environ.get("target_path")
 features_path = os.environ.get("features_path")
 
+from LIA import models
+from LIA import microlensing_classifier
 from pyLIMA import event
 from pyLIMA import telescopes
 from pyLIMA import microlmodels
-from LIA import models
-from LIA import microlensing_classifier
 
 
 def classify_lightcurves():
@@ -91,7 +91,7 @@ def classify_lightcurves():
 
 
 
-def pyLIMAfit(filename, color):
+def pyLIMAfit(filename):
 
     ML_event = event.Event()
     ML_event.name = str(filename).replace(".dat","")
@@ -100,22 +100,21 @@ def pyLIMAfit(filename, color):
     
     fileDirectoryR = lightcurve_path+'Rfilter/'+str(filename)
     fileDirectoryG = lightcurve_path+'Gfilter/'+str(filename)
-    data_1 = np.loadtxt(fileDirectoryR)
-    telescope_1 = telescopes.Telescope(name='LCOGT', camera_filter='R', light_curve_magnitude=data_1)
-    data_2 = np.loadtxt(fileDirectoryG)
-    telescope_2 = telescopes.Telescope(name='LCOGT', camera_filter='G', light_curve_magnitude=data_2)
-    if color == 'R':
+    if ML_event.name.endswith('R'): #color == 'R':
+        data_1 = np.loadtxt(fileDirectoryR)
+        telescope_1 = telescopes.Telescope(name='LCOGT', camera_filter='R', light_curve_magnitude=data_1)
         ML_event.telescopes.append(telescope_1)
 
-    if color == 'G':
+    if ML_event.name.endswith('G'): #color == 'G':
+        data_2 = np.loadtxt(fileDirectoryG)
+        telescope_2 = telescopes.Telescope(name='LCOGT', camera_filter='G', light_curve_magnitude=data_2)
         ML_event.telescopes.append(telescope_2)
 
     ML_event.find_survey('LCOGT')
     ML_event.check_event()
     PSPL_model = microlmodels.create_model('PSPL', ML_event)
-    ML_event.fit(model_1,'DE')
-    ML_event.fits[0].produce_outputs()
-
+    ML_event.fit(PSPL_model,'DE')
+    ML_event.fits[-1].produce_outputs()
     try:
         initial_parameters = [ getattr(ML_event.fits[-2].outputs.fit_parameters, key) for 
                               key in ML_event.fits[-2].outputs.fit_parameters._fields[:4]]
@@ -128,11 +127,11 @@ def pyLIMAfit(filename, color):
         pass
 
     output1 = plt.figure(1)
-    plt.savefig('lightcurve_path+str(filename).replace(".dat","")+pyLIMA1.png')
+    plt.savefig(lightcurve_path+'pyLIMA_fits/'+str(filename).replace(".dat","")+'_pyLIMA_fit.png')
     output2 = plt.figure(2)
-    plt.savefig('lightcurve_path+str(filename).replace(".dat","")+pyLIMA2.png')
+    plt.savefig(lightcurve_path+'pyLIMA_fits/'+str(filename).replace(".dat","")+'_pyLIMA_parameters.png')
+    plt.close('all')
 
-    
     return 0
 
 
@@ -141,9 +140,25 @@ class Command(BaseCommand):
     help = "classify lightcurves"
 
     def handle(self, *args, **options):
-        class_results = classify_lightcurves()
-        filename = class_results[0]
-        nothing = pyLIMAfit(filename, 'G')
+        class_results = classify_lightcurves()  #[[filename, prediction, ml_pred], [filename, prediction, ml_pred],...]
+        for idx in range(len(class_results)):
+            if class_results[idx][2] > 0.16:
+                filename = class_results[idx][0]
+                try:                
+                    nothing = pyLIMAfit(filename)
+
+                except:
+                   print('bad ML probability')
+
+            plt.close('all')
+
+
+        #filename = class_results[3][0]
+        #print(class_results)
+        #print(filename)
+        #print(len(class_results))
+        #print(class_results[3][2])
+        #nothing = pyLIMAfit(filename, 'R')
 
 
 

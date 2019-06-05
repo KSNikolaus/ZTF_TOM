@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+from django.utils.crypto import get_random_string
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -21,7 +22,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY")
+chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
+SECRET_KEY = os.environ.get('SECRET_KEY', get_random_string(50, chars))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -222,7 +224,7 @@ TOM_FACILITY_CLASSES = [
 #     {'name': 'eligible', 'type': 'boolean'},
 #     {'name': 'dicovery_date', 'type': 'datetime'}
 # ]
-EXTRA_FIELDS = []
+EXTRA_FIELDS = [] #{'name': 'ML_prob', 'type': 'number'}]
 
 # Authentication strategy can either be LOCKED (required login for all views)
 # or READ_ONLY (read only access to views)
