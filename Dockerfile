@@ -1,13 +1,5 @@
 FROM python:3.7
 
-# will open port 80 for the webserver to be run on
-EXPOSE 80
-ENTRYPOINT ["/init"]
-
-# Establish user ID of container while running
-RUN groupadd -g 20000 domainusers \
-    && useradd -u 20007 -g 20000 -c "Microlensing user" -d /home/robouser -s /bin/bash robouser
-
 RUN apt-get -y update \
 	&& apt-get -y install gfortran \
 	&& apt-get -y clean
