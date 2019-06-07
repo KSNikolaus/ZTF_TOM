@@ -25,9 +25,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
 SECRET_KEY = os.environ.get('SECRET_KEY', get_random_string(50, chars))
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [ 'einstore.science.lco.global', '127.0.0.1' ]
 LCO_API = os.environ.get("LCO_API_token")
 
 # Application definition

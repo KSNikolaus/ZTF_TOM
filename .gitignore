@@ -2,3 +2,4 @@ db.sqlite3
 data
 lightcurve/plots
 lightcurve/data
+.DS_Store
