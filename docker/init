@@ -1,14 +1,10 @@
 #!/bin/bash
 
-export PYTHONPATH="/var/www/ztftom"
-export DJANGO_SETTINGS_MODULE="ZTF_TOM.settings"
+# Perform Django database migrations
+python manage.py migrate --no-input
 
-# collect static files
-python /var/www/ztftom/manage.py collectstatic --noinput
+# Collect static files
+python manage.py collectstatic --no-input
 
-# perform database migrations
-python /var/www/ztftom/manage.py migrate --noinput
-chown -R uwsgi:uwsgi /var/www/ztftom
-
-# run under supervisord
-exec /usr/bin/supervisord -n -c /etc/supervisord.conf
+# Run Python application server
+exec gunicorn --bind=0.0.0.0:8080 --workers=2 --access-logfile=- --error-logfile=- ZTF_TOM.wsgi:application
