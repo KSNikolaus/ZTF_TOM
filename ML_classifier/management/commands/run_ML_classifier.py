@@ -5,6 +5,7 @@ import requests
 import numpy as np
 import time
 import sys
+from tom_targets.models import Target
 from natsort import natsorted
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import text
@@ -87,6 +88,12 @@ def classify_lightcurves():
         location = fileDirectoryClassifiedG+ml_pred+str(filename)
         np.savetxt(location, data,fmt='%s')
 
+        targetname = str(filename).replace("R.dat","")
+        targetname = targetname.replace("G.dat","")
+        print(targetname)
+        target = Target.objects.get(name=targetname)
+        target.save(extras={'Microlensing probability': {'probability': ml_pred, 'timestamp': datetime.datetime.now()}})
+
     return class_results
 
 
@@ -142,6 +149,25 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         class_results = classify_lightcurves()  #[[filename, prediction, ml_pred], [filename, prediction, ml_pred],...]
         for idx in range(len(class_results)):
+            targetname = str(class_results[idx][0]).replace(".dat","")
+            if targetname.endswith('R'):
+                targetname = targetname.replace("R","")
+
+            if targetname.endswith('G'):
+                targetname = targetname.replace("G","")
+
+            
+
+
+            #targetname = str(filename).replace("R.dat","")
+            #targetname = targetname.replace("G.dat","")
+            #print(targetname)
+            #target = Target.objects.get(name=targetname)
+            #target.save(extras={'Microlensing probability': ml_pred})
+
+            nothing = 0
+        
+        for idx in range(len(class_results)):
             if class_results[idx][2] > 0.16:
                 filename = class_results[idx][0]
                 try:                
@@ -153,12 +179,6 @@ class Command(BaseCommand):
             plt.close('all')
 
 
-        #filename = class_results[3][0]
-        #print(class_results)
-        #print(filename)
-        #print(len(class_results))
-        #print(class_results[3][2])
-        #nothing = pyLIMAfit(filename, 'R')
 
 
 
