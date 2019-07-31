@@ -3,3 +3,5 @@ data
 lightcurve/plots
 lightcurve/data
 .DS_Store
+ZTF_TOM/settings.py
+settings.py

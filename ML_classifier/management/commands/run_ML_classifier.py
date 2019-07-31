@@ -77,8 +77,13 @@ def classify_lightcurves():
         mjd = sosort[:,0]
         mag = sosort[:,1]
         magerr = sosort[:,2]
+        
+        try:
+            prediction, ml_pred = microlensing_classifier.predict(mag, magerr, rf, pca)[0:2]
 
-        prediction, ml_pred = microlensing_classifier.predict(mag, magerr, rf, pca)[0:2]
+        except(ValueError):
+            prediction, ml_pred = "NA", "NA"
+
         #print('filename: ', filename, 'prediction: ', prediction, 'ml_pred = ', ml_pred)
         result = [filename, prediction, ml_pred]
         class_results.append(result)
@@ -91,8 +96,8 @@ def classify_lightcurves():
         targetname = str(filename).replace("R.dat","")
         targetname = targetname.replace("G.dat","")
         print(targetname)
-        target = Target.objects.get(name=targetname)
-        target.save(extras={'Microlensing probability': {'probability': ml_pred, 'timestamp': datetime.datetime.now()}})
+        #target = Target.objects.get(name=targetname)
+        #target.save(extras={'Microlensing probability': {'probability': ml_pred, 'timestamp': datetime.datetime.now()}})
 
     return class_results
 
@@ -167,14 +172,14 @@ class Command(BaseCommand):
 
             nothing = 0
         
-        for idx in range(len(class_results)):
-            if class_results[idx][2] > 0.16:
-                filename = class_results[idx][0]
-                try:                
-                    nothing = pyLIMAfit(filename)
-
-                except:
-                   print('bad ML probability')
+        #for idx in range(len(class_results)):
+        #    if class_results[idx][2] > 0.4:
+        #        filename = class_results[idx][0]
+        #        try:                
+        #            nothing = pyLIMAfit(filename)
+        #
+        #        except:
+        #           print('bad ML probability')
 
             plt.close('all')
 
