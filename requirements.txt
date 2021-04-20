@@ -48,7 +48,7 @@ nose==1.3.7
 Pillow==6.0.0
 plotly==3.9.0
 pluggy==0.11.0
-py==1.8.0
+py==1.10.0
 PyAVM==0.9.4
 pycparser==2.19
 pyephem==3.7.6.0
